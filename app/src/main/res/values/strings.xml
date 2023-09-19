@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Shift lab test</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="birthdate">Birth date</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="welcome">Welcome!</string>
 </resources>
