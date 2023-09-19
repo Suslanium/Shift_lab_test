@@ -1,4 +1,4 @@
-package com.example.shiftlabtest.ui.common
+package com.example.shiftlabtest.presentation.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -15,8 +15,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.shiftlabtest.common.Constants
-import com.example.shiftlabtest.ui.theme.LabelRegularStyle
-import com.example.shiftlabtest.ui.theme.RoundedCornerShapePercentMedium
+import com.example.shiftlabtest.presentation.ui.theme.LabelRegularStyle
+import com.example.shiftlabtest.presentation.ui.theme.RoundedCornerShapePercentMedium
 
 @Composable
 fun AuthItem(

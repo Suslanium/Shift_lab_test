@@ -1,4 +1,4 @@
-package com.example.shiftlabtest.ui.theme
+package com.example.shiftlabtest.presentation.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme

@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.shiftlabtest.ui.screen.RegistrationScreen
-import com.example.shiftlabtest.ui.theme.ShiftLabTestTheme
+import com.example.shiftlabtest.presentation.ui.screen.RegistrationScreen
+import com.example.shiftlabtest.presentation.ui.theme.ShiftLabTestTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
