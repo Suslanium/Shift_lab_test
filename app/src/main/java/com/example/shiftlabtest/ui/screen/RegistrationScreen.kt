@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -26,9 +27,28 @@ import com.example.shiftlabtest.ui.theme.RegistrationSecondaryElementWeight
 import com.example.shiftlabtest.ui.theme.RegistrationSpacerWeight
 import com.example.shiftlabtest.ui.theme.ShiftLabTestTheme
 import com.example.shiftlabtest.ui.theme.Title
+import com.maxkeppeker.sheets.core.models.base.UseCaseState
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
+import java.time.LocalDate
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RegistrationScreen() {
+    val calendarState = rememberUseCaseState(visible = false)
+    val timeBoundary = LocalDate.now().let { now -> LocalDate.MIN..now }
+    CalendarDialog(state = calendarState, config = CalendarConfig(
+        yearSelection = true,
+        monthSelection = true,
+        style = CalendarStyle.MONTH,
+        boundary = timeBoundary
+    ), selection = CalendarSelection.Date {
+
+    })
+
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -50,7 +70,7 @@ fun RegistrationScreen() {
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RegistrationForm()
+            RegistrationForm(calendarState)
         }
         Box(
             modifier = Modifier.weight(RegistrationSecondaryElementWeight),
@@ -67,7 +87,7 @@ fun RegistrationScreen() {
 }
 
 @Composable
-private fun RegistrationForm() {
+private fun RegistrationForm(calendarState: UseCaseState) {
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.person_icon),
         label = stringResource(id = R.string.name),
@@ -85,7 +105,11 @@ private fun RegistrationForm() {
         label = stringResource(id = R.string.birthdate),
         onValueChange = {},
         widthFraction = RegistrationContentWidthFraction,
-        enabled = false
+        enabled = false,
+        clickable = true,
+        onClick = {
+            calendarState.show()
+        }
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.password_icon),
