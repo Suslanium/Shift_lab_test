@@ -27,4 +27,5 @@
     <string name="dialog_title">Привет, %1$s %2$s!</string>
     <string name="dialog_message">Надеемся, что это приложение вам понравится:)</string>
     <string name="ok">ОК</string>
+    <string name="something_went_wrong">Что-то пошло не так…</string>
 </resources>
