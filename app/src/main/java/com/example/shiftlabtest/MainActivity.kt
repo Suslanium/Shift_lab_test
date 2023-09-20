@@ -7,7 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.shiftlabtest.presentation.ui.screen.MainScreen
+import androidx.navigation.compose.rememberNavController
+import com.example.shiftlabtest.presentation.ui.navigation.ShiftLabTestNavigation
 import com.example.shiftlabtest.presentation.ui.theme.ShiftLabTestTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,12 +16,14 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ShiftLabTestTheme {
+                val navHostController = rememberNavController()
                 // A surface container using the 'background' color from the theme
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
+                    modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
                 ) {
-                    MainScreen()
+                    ShiftLabTestNavigation(navHostController = navHostController, onExitClick = {
+                        finish()
+                    })
                 }
             }
         }

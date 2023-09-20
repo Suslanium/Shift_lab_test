@@ -27,4 +27,5 @@
     <string name="dialog_message">We hope you enjoy this app:)</string>
     <string name="ok">OK</string>
     <string name="something_went_wrong">Something went wrong…</string>
+    <string name="error">Error</string>
 </resources>

@@ -9,25 +9,32 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.navigation.NavHostController
 import com.example.shiftlabtest.R
 import com.example.shiftlabtest.domain.Constants
 import com.example.shiftlabtest.domain.Constants.BIRTH_DATE_RANGE
 import com.example.shiftlabtest.presentation.common.asString
 import com.example.shiftlabtest.presentation.ui.common.AuthItem
+import com.example.shiftlabtest.presentation.ui.common.TextAlertDialog
 import com.example.shiftlabtest.presentation.ui.common.TextButton
+import com.example.shiftlabtest.presentation.ui.navigation.ShiftLabTestDestinations
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationContentWidthFraction
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationPrimaryElementWeight
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationSecondaryElementWeight
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationSpacerWeight
 import com.example.shiftlabtest.presentation.ui.theme.Title
+import com.example.shiftlabtest.presentation.uistate.event.RegistrationEvent
 import com.example.shiftlabtest.presentation.viewmodel.RegistrationViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
@@ -37,11 +44,35 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(navHostController: NavHostController) {
     val registrationViewModel: RegistrationViewModel = koinViewModel()
+    var shouldShowErrorDialog by remember { mutableStateOf(false) }
 
+    LaunchedEffect(true) {
+        registrationViewModel.registrationEvents.collect { event ->
+            when (event) {
+                is RegistrationEvent.Success -> navHostController.navigate(ShiftLabTestDestinations.MAIN)
+                is RegistrationEvent.Error -> shouldShowErrorDialog = true
+            }
+        }
+    }
+
+    if (shouldShowErrorDialog) {
+        TextAlertDialog(title = stringResource(id = R.string.error),
+            text = stringResource(id = R.string.something_went_wrong),
+            confirmText = stringResource(id = R.string.ok),
+            onConfirm = { shouldShowErrorDialog = false },
+            onDismiss = { shouldShowErrorDialog = false })
+    }
+
+    RegistrationContent(registrationViewModel)
+}
+
+@Composable
+@OptIn(ExperimentalMaterial3Api::class)
+private fun RegistrationContent(registrationViewModel: RegistrationViewModel) {
+    val registrationIsInProgress by remember { registrationViewModel.registrationIsInProgress }
     val calendarState = rememberUseCaseState(visible = false)
     CalendarDialog(
         state = calendarState, config = CalendarConfig(
@@ -73,7 +104,7 @@ fun RegistrationScreen() {
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            RegistrationForm(calendarState, registrationViewModel)
+            RegistrationForm(calendarState, registrationViewModel, registrationIsInProgress)
         }
         Box(
             modifier = Modifier.weight(RegistrationSecondaryElementWeight),
@@ -84,7 +115,7 @@ fun RegistrationScreen() {
                 text = stringResource(id = R.string.register),
                 icon = ImageVector.vectorResource(R.drawable.double_arrow_right_icon),
                 onClick = registrationViewModel::register,
-                enabled = registrationViewModel.dataIsFilled
+                enabled = registrationViewModel.dataIsFilled && !registrationIsInProgress
             )
         }
         Spacer(modifier = Modifier.weight(RegistrationSpacerWeight))
@@ -93,7 +124,7 @@ fun RegistrationScreen() {
 
 @Composable
 private fun RegistrationForm(
-    calendarState: UseCaseState, registrationViewModel: RegistrationViewModel
+    calendarState: UseCaseState, registrationViewModel: RegistrationViewModel, registrationIsInProgress: Boolean
 ) {
     val registrationContent by remember { registrationViewModel.registrationContent }
     AuthItem(
@@ -103,7 +134,8 @@ private fun RegistrationForm(
         onValueChange = registrationViewModel::setName,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.nameErrorMessage != null,
-        errorMessage = registrationContent.nameErrorMessage?.asString()
+        errorMessage = registrationContent.nameErrorMessage?.asString(),
+        enabled = !registrationIsInProgress
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.person_icon),
@@ -112,7 +144,8 @@ private fun RegistrationForm(
         onValueChange = registrationViewModel::setSurname,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.surnameErrorMessage != null,
-        errorMessage = registrationContent.surnameErrorMessage?.asString()
+        errorMessage = registrationContent.surnameErrorMessage?.asString(),
+        enabled = !registrationIsInProgress
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.calendar_icon),
@@ -122,7 +155,7 @@ private fun RegistrationForm(
         onValueChange = {},
         widthFraction = RegistrationContentWidthFraction,
         enabled = false,
-        clickable = true,
+        clickable = !registrationIsInProgress,
         onClick = {
             calendarState.show()
         },
@@ -136,7 +169,8 @@ private fun RegistrationForm(
         onValueChange = registrationViewModel::setPassword,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.passwordErrorMessage != null,
-        errorMessage = registrationContent.passwordErrorMessage?.asString()
+        errorMessage = registrationContent.passwordErrorMessage?.asString(),
+        enabled = !registrationIsInProgress
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.password_icon),
@@ -145,6 +179,7 @@ private fun RegistrationForm(
         onValueChange = registrationViewModel::setConfirmPassword,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.confirmPasswordErrorMessage != null,
-        errorMessage = registrationContent.confirmPasswordErrorMessage?.asString()
+        errorMessage = registrationContent.confirmPasswordErrorMessage?.asString(),
+        enabled = !registrationIsInProgress
     )
 }
