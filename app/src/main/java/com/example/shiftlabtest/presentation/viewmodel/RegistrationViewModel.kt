@@ -3,6 +3,8 @@ package com.example.shiftlabtest.presentation.viewmodel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.shiftlabtest.domain.entity.registration.RegistrationRequest
 import com.example.shiftlabtest.domain.usecase.RegisterUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateBirthDateUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateConfirmPasswordUseCase
@@ -11,6 +13,11 @@ import com.example.shiftlabtest.domain.usecase.ValidatePasswordUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateSurnameUseCase
 import com.example.shiftlabtest.presentation.mapper.ErrorTypeToStringResource
 import com.example.shiftlabtest.presentation.uistate.RegistrationFormState
+import com.example.shiftlabtest.presentation.uistate.event.RegistrationEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -26,6 +33,9 @@ class RegistrationViewModel(
         get() = _registrationContent
     private val _registrationContent = mutableStateOf(RegistrationFormState())
 
+    private val _registrationEventChannel = Channel<RegistrationEvent>()
+    val registrationEvents = _registrationEventChannel.receiveAsFlow()
+
     val dataIsFilled: Boolean
         get() = _registrationContent.value.name.isNotBlank()
                 && _registrationContent.value.surname.isNotBlank()
@@ -40,6 +50,10 @@ class RegistrationViewModel(
                 && _registrationContent.value.birthDateErrorMessage == null
                 && _registrationContent.value.passwordErrorMessage == null
                 && _registrationContent.value.confirmPasswordErrorMessage == null
+
+    val registrationIsInProgress: State<Boolean>
+        get() = _registrationIsInProcess
+    private val _registrationIsInProcess = mutableStateOf(false)
 
     val dateFormat: DateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
 
@@ -99,7 +113,22 @@ class RegistrationViewModel(
 
     fun register() {
         if (dataIsFilled) {
-            //Code
+            viewModelScope.launch(Dispatchers.IO) {
+                _registrationIsInProcess.value = true
+                try {
+                    val request = RegistrationRequest(
+                        _registrationContent.value.name,
+                        _registrationContent.value.surname,
+                        _registrationContent.value.birthDate!!,
+                        _registrationContent.value.password
+                    )
+                    registerUseCase(request)
+                    _registrationEventChannel.send(RegistrationEvent.Success)
+                } catch (_: Exception) {
+                    _registrationEventChannel.send(RegistrationEvent.Error)
+                    _registrationIsInProcess.value = false
+                }
+            }
         }
     }
 }

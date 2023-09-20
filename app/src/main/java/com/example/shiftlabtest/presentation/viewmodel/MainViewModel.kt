@@ -8,7 +8,10 @@ import androidx.lifecycle.viewModelScope
 import com.example.shiftlabtest.domain.usecase.GetUserUseCase
 import com.example.shiftlabtest.domain.usecase.LoginCheckUseCase
 import com.example.shiftlabtest.presentation.uistate.MainScreenUiState
+import com.example.shiftlabtest.presentation.uistate.event.MainScreenEvent
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -22,6 +25,9 @@ class MainViewModel(
     private var _mainScreenState: MutableState<MainScreenUiState> =
         mutableStateOf(MainScreenUiState.Loading)
 
+    private val _mainScreenEventChannel = Channel<MainScreenEvent>()
+    val mainScreenEvents = _mainScreenEventChannel.receiveAsFlow()
+
     init {
         loadData()
     }
@@ -33,7 +39,8 @@ class MainViewModel(
             try {
                 val isLoggedIn = loginCheckUseCase()
                 if (!isLoggedIn) {
-                    //Open registration screen
+                    _mainScreenEventChannel.send(MainScreenEvent.AuthenticationRequired)
+                    return@launch
                 }
                 val user = getUserUseCase()
                 if (user == null) {
