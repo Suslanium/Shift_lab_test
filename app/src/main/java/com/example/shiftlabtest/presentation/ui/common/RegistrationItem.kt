@@ -1,4 +1,4 @@
-package com.example.shiftlabtest.ui.common
+package com.example.shiftlabtest.presentation.ui.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -14,9 +14,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import com.example.shiftlabtest.common.Constants
-import com.example.shiftlabtest.ui.theme.LabelRegularStyle
-import com.example.shiftlabtest.ui.theme.RoundedCornerShapePercentMedium
+import com.example.shiftlabtest.domain.Constants
+import com.example.shiftlabtest.presentation.ui.theme.LabelRegularStyle
+import com.example.shiftlabtest.presentation.ui.theme.RoundedCornerShapePercentMedium
 
 @Composable
 fun AuthItem(
@@ -28,7 +28,9 @@ fun AuthItem(
     enabled: Boolean = true,
     clickable: Boolean = false,
     onClick: () -> Unit = {},
-    widthFraction: Float = 1f
+    widthFraction: Float = 1f,
+    isError: Boolean = false,
+    errorMessage: String? = null
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     OutlinedTextField(
@@ -52,16 +54,19 @@ fun AuthItem(
             focusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
             unfocusedContainerColor = MaterialTheme.colorScheme.primaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primaryContainer,
+            errorContainerColor = MaterialTheme.colorScheme.primaryContainer,
             focusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
             unfocusedTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            errorTextColor = MaterialTheme.colorScheme.onPrimaryContainer,
             unfocusedBorderColor = MaterialTheme.colorScheme.primaryContainer,
             focusedBorderColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            errorBorderColor = MaterialTheme.colorScheme.errorContainer,
-            disabledBorderColor = MaterialTheme.colorScheme.primaryContainer,
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            disabledBorderColor = if (!enabled && isError) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primaryContainer,
             focusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
             unfocusedLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
+            disabledLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            errorLeadingIconColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         modifier = Modifier
             .fillMaxWidth(widthFraction)
@@ -69,7 +74,17 @@ fun AuthItem(
         shape = RoundedCornerShape(percent = RoundedCornerShapePercentMedium),
         enabled = enabled,
         keyboardOptions = keyboardOptions,
-        singleLine = true
+        singleLine = true,
+        supportingText = {
+            if (isError && errorMessage != null) {
+                Text(
+                    text = errorMessage,
+                    modifier = Modifier.fillMaxWidth(widthFraction),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+        },
+        isError = isError
     )
 }
 

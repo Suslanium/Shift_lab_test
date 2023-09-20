@@ -1,4 +1,4 @@
-package com.example.shiftlabtest.ui.common
+package com.example.shiftlabtest.presentation.ui.common
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -21,10 +21,10 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
-import com.example.shiftlabtest.ui.theme.IconSizeMedium
-import com.example.shiftlabtest.ui.theme.LabelRegularStyle
-import com.example.shiftlabtest.ui.theme.PaddingMedium
-import com.example.shiftlabtest.ui.theme.SmallButtonCornerRadius
+import com.example.shiftlabtest.presentation.ui.theme.IconSizeMedium
+import com.example.shiftlabtest.presentation.ui.theme.LabelRegularStyle
+import com.example.shiftlabtest.presentation.ui.theme.PaddingMedium
+import com.example.shiftlabtest.presentation.ui.theme.SmallButtonCornerRadius
 
 @Composable
 fun TextButton(
@@ -32,6 +32,7 @@ fun TextButton(
     onClick: () -> Unit = {},
     text: String,
     icon: ImageVector? = null,
+    enabled: Boolean = true,
     buttonColor: Color = MaterialTheme.colorScheme.primary,
     buttonContentColor: Color = MaterialTheme.colorScheme.onPrimary,
     buttonContentPadding: PaddingValues = PaddingValues(PaddingMedium),
@@ -47,7 +48,8 @@ fun TextButton(
         shape = buttonShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor, contentColor = buttonContentColor
-        )
+        ),
+        enabled = enabled
     ) {
         if (icon != null) {
             Icon(
