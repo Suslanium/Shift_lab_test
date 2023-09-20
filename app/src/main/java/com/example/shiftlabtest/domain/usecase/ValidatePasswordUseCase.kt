@@ -6,14 +6,6 @@ import com.example.shiftlabtest.domain.entity.registration.validation.FieldValid
 
 class ValidatePasswordUseCase {
 
-    private val specialSymbolCategories = listOf(
-        CharCategory.MATH_SYMBOL,
-        CharCategory.START_PUNCTUATION,
-        CharCategory.END_PUNCTUATION,
-        CharCategory.CURRENCY_SYMBOL,
-        CharCategory.OTHER_PUNCTUATION
-    )
-
     operator fun invoke(password: String): FieldValidationResult {
         if (password.isBlank()) {
             return FieldValidationResult(
@@ -32,7 +24,7 @@ class ValidatePasswordUseCase {
     private fun validatePasswordContents(password: String): FieldValidationResult {
         val containsDigit = password.any { it.isDigit() }
         val containsLetter = password.any { it.isLetter() }
-        val containsSpecialSymbol = password.any { it.category in specialSymbolCategories }
+        val containsSpecialSymbol = password.any { !it.isDigit() && !it.isLetter() }
 
         if (containsLetter && !containsDigit && !containsSpecialSymbol) {
             return FieldValidationResult(

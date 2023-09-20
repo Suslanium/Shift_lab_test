@@ -1,6 +1,7 @@
 package com.example.shiftlabtest
 
 import android.app.Application
+import com.example.shiftlabtest.di.provideDataModule
 import com.example.shiftlabtest.di.provideDomainModule
 import com.example.shiftlabtest.di.providePresentationModule
 import org.koin.android.ext.koin.androidContext
@@ -14,7 +15,8 @@ class ShiftlabtestApplication : Application() {
             androidContext(this@ShiftlabtestApplication)
             modules(
                 providePresentationModule(),
-                provideDomainModule()
+                provideDomainModule(),
+                provideDataModule()
             )
         }
     }

@@ -3,6 +3,7 @@ package com.example.shiftlabtest.presentation.viewmodel
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import com.example.shiftlabtest.domain.usecase.RegisterUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateBirthDateUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateConfirmPasswordUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateNameUseCase
@@ -18,7 +19,8 @@ class RegistrationViewModel(
     private val validateSurnameUseCase: ValidateSurnameUseCase,
     private val validateBirthDateUseCase: ValidateBirthDateUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
-    private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase
+    private val validateConfirmPasswordUseCase: ValidateConfirmPasswordUseCase,
+    private val registerUseCase: RegisterUseCase
 ) : ViewModel() {
     val registrationContent: State<RegistrationFormState>
         get() = _registrationContent
@@ -68,10 +70,21 @@ class RegistrationViewModel(
 
     fun setPassword(password: String) {
         val passwordValidationResult = validatePasswordUseCase(password)
-        _registrationContent.value = _registrationContent.value.copy(
-            password = password,
-            passwordErrorMessage = ErrorTypeToStringResource.map[passwordValidationResult.errorType]
-        )
+        if (_registrationContent.value.confirmPassword.isNotBlank()) {
+            val confirmPasswordValidationResult = validateConfirmPasswordUseCase(
+                password, _registrationContent.value.confirmPassword
+            )
+            _registrationContent.value = _registrationContent.value.copy(
+                password = password,
+                passwordErrorMessage = ErrorTypeToStringResource.map[passwordValidationResult.errorType],
+                confirmPasswordErrorMessage = ErrorTypeToStringResource.map[confirmPasswordValidationResult.errorType]
+            )
+        } else {
+            _registrationContent.value = _registrationContent.value.copy(
+                password = password,
+                passwordErrorMessage = ErrorTypeToStringResource.map[passwordValidationResult.errorType]
+            )
+        }
     }
 
     fun setConfirmPassword(confirmPassword: String) {

@@ -69,4 +69,5 @@ dependencies {
     implementation("io.insert-koin:koin-core:3.3.2")
     implementation("io.insert-koin:koin-android:3.3.2")
     implementation("io.insert-koin:koin-androidx-compose:3.4.1")
+    implementation("androidx.security:security-crypto:1.1.0-alpha06")
 }
