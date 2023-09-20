@@ -24,3 +24,9 @@ val LabelRegularStyle = TextStyle(
     fontWeight = FontWeight.Normal,
     fontSize = 16.sp
 )
+
+val LabelBoldStyle = TextStyle(
+    fontFamily = Ubuntu,
+    fontWeight = FontWeight.Bold,
+    fontSize = 16.sp
+)

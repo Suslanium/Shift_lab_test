@@ -22,4 +22,9 @@
     <string name="password_letter_spec_symbol">Password must contain a letter and a special symbol</string>
     <string name="confirm_pass_blank">Repeat your password</string>
     <string name="passwords_dont_match">Passwords do not match</string>
+    <string name="greeting">Greeting</string>
+    <string name="dialog_title">Hi, %1$s %2$s!</string>
+    <string name="dialog_message">We hope you enjoy this app:)</string>
+    <string name="ok">OK</string>
+    <string name="something_went_wrong">Something went wrong…</string>
 </resources>
