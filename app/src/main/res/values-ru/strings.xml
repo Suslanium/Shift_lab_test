@@ -23,4 +23,8 @@
     <string name="password_letter_spec_symbol">Пароль должен содержать букву и специальный символ</string>
     <string name="confirm_pass_blank">Повторите пароль</string>
     <string name="passwords_dont_match">Пароли не совпадают</string>
+    <string name="greeting">Приветствие</string>
+    <string name="dialog_title">Привет, %1$s %2$s!</string>
+    <string name="dialog_message">Надеемся, что это приложение вам понравится:)</string>
+    <string name="ok">ОК</string>
 </resources>
