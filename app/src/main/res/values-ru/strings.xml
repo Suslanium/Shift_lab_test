@@ -8,4 +8,19 @@
     <string name="confirm_password">Подтвердите пароль</string>
     <string name="register">Регистрация</string>
     <string name="welcome">Добро пожаловать!</string>
+    <string name="blank_name">Имя должно быть заполнено</string>
+    <string name="name_too_short">Имя должно содержать минимум %1$d символа</string>
+    <string name="blank_surname">Фамилия должна быть заполнена</string>
+    <string name="surname_too_short">Фамилия должна содержать минимум %1$d символа</string>
+    <string name="blank_birthdate">Дата рождения должна быть заполнена</string>
+    <string name="password_blank">Пароль не может быть пустым</string>
+    <string name="password_too_short">Пароль должен содержать минимум %1$d символов</string>
+    <string name="password_letter">Пароль должен содержать букву</string>
+    <string name="password_digit">Пароль должен содержать цифру</string>
+    <string name="password_spec_symbol">Пароль должен содержать специальный символ</string>
+    <string name="password_digit_letter">Пароль должен содержать цифру и букву</string>
+    <string name="password_digit_spec_symbol">Пароль должен содержать цифру и специальный символ</string>
+    <string name="password_letter_spec_symbol">Пароль должен содержать букву и специальный символ</string>
+    <string name="confirm_pass_blank">Повторите пароль</string>
+    <string name="passwords_dont_match">Пароли не совпадают</string>
 </resources>

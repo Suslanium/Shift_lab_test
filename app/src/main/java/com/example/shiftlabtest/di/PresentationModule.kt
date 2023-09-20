@@ -6,6 +6,6 @@ import org.koin.dsl.module
 
 fun providePresentationModule() = module {
     viewModel {
-        RegistrationViewModel()
+        RegistrationViewModel(get(), get(), get(), get(), get())
     }
 }

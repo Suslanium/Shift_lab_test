@@ -32,6 +32,7 @@ fun TextButton(
     onClick: () -> Unit = {},
     text: String,
     icon: ImageVector? = null,
+    enabled: Boolean = true,
     buttonColor: Color = MaterialTheme.colorScheme.primary,
     buttonContentColor: Color = MaterialTheme.colorScheme.onPrimary,
     buttonContentPadding: PaddingValues = PaddingValues(PaddingMedium),
@@ -47,7 +48,8 @@ fun TextButton(
         shape = buttonShape,
         colors = ButtonDefaults.buttonColors(
             containerColor = buttonColor, contentColor = buttonContentColor
-        )
+        ),
+        enabled = enabled
     ) {
         if (icon != null) {
             Icon(

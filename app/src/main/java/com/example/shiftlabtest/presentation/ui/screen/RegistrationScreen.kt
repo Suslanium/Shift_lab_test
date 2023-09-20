@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,16 +17,16 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.shiftlabtest.R
-import com.example.shiftlabtest.common.Constants
+import com.example.shiftlabtest.domain.Constants
+import com.example.shiftlabtest.domain.Constants.BIRTH_DATE_RANGE
+import com.example.shiftlabtest.presentation.common.asString
 import com.example.shiftlabtest.presentation.ui.common.AuthItem
 import com.example.shiftlabtest.presentation.ui.common.TextButton
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationContentWidthFraction
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationPrimaryElementWeight
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationSecondaryElementWeight
 import com.example.shiftlabtest.presentation.ui.theme.RegistrationSpacerWeight
-import com.example.shiftlabtest.presentation.ui.theme.ShiftLabTestTheme
 import com.example.shiftlabtest.presentation.ui.theme.Title
 import com.example.shiftlabtest.presentation.viewmodel.RegistrationViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
@@ -50,7 +48,7 @@ fun RegistrationScreen() {
             yearSelection = true,
             monthSelection = true,
             style = CalendarStyle.MONTH,
-            boundary = registrationViewModel.timeBoundary
+            boundary = BIRTH_DATE_RANGE
         ), selection = CalendarSelection.Date(onSelectDate = registrationViewModel::setBirthDate)
     )
 
@@ -85,7 +83,8 @@ fun RegistrationScreen() {
                 modifier = Modifier.fillMaxWidth(RegistrationContentWidthFraction),
                 text = stringResource(id = R.string.register),
                 icon = ImageVector.vectorResource(R.drawable.double_arrow_right_icon),
-                onClick = registrationViewModel::register
+                onClick = registrationViewModel::register,
+                enabled = registrationViewModel.dataIsFilled
             )
         }
         Spacer(modifier = Modifier.weight(RegistrationSpacerWeight))
@@ -102,16 +101,21 @@ private fun RegistrationForm(
         label = stringResource(id = R.string.name),
         textFieldValue = registrationContent.name,
         onValueChange = registrationViewModel::setName,
-        widthFraction = RegistrationContentWidthFraction
+        widthFraction = RegistrationContentWidthFraction,
+        isError = registrationContent.nameErrorMessage != null,
+        errorMessage = registrationContent.nameErrorMessage?.asString()
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.person_icon),
         label = stringResource(id = R.string.surname),
         textFieldValue = registrationContent.surname,
         onValueChange = registrationViewModel::setSurname,
-        widthFraction = RegistrationContentWidthFraction
+        widthFraction = RegistrationContentWidthFraction,
+        isError = registrationContent.surnameErrorMessage != null,
+        errorMessage = registrationContent.surnameErrorMessage?.asString()
     )
-    AuthItem(icon = ImageVector.vectorResource(id = R.drawable.calendar_icon),
+    AuthItem(
+        icon = ImageVector.vectorResource(id = R.drawable.calendar_icon),
         label = stringResource(id = R.string.birthdate),
         textFieldValue = registrationContent.birthDate?.format(registrationViewModel.dateFormat)
             ?: Constants.EMPTY_STRING,
@@ -121,32 +125,26 @@ private fun RegistrationForm(
         clickable = true,
         onClick = {
             calendarState.show()
-        })
+        },
+        isError = registrationContent.birthDateErrorMessage != null,
+        errorMessage = registrationContent.birthDateErrorMessage?.asString()
+    )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.password_icon),
         label = stringResource(id = R.string.password),
         textFieldValue = registrationContent.password,
         onValueChange = registrationViewModel::setPassword,
-        widthFraction = RegistrationContentWidthFraction
+        widthFraction = RegistrationContentWidthFraction,
+        isError = registrationContent.passwordErrorMessage != null,
+        errorMessage = registrationContent.passwordErrorMessage?.asString()
     )
     AuthItem(
         icon = ImageVector.vectorResource(id = R.drawable.password_icon),
         label = stringResource(id = R.string.confirm_password),
         textFieldValue = registrationContent.confirmPassword,
         onValueChange = registrationViewModel::setConfirmPassword,
-        widthFraction = RegistrationContentWidthFraction
+        widthFraction = RegistrationContentWidthFraction,
+        isError = registrationContent.confirmPasswordErrorMessage != null,
+        errorMessage = registrationContent.confirmPasswordErrorMessage?.asString()
     )
-}
-
-@Preview
-@Composable
-fun PreviewRegistrationScreen() {
-    ShiftLabTestTheme {
-        // A surface container using the 'background' color from the theme
-        Surface(
-            modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background
-        ) {
-            RegistrationScreen()
-        }
-    }
 }
