@@ -5,8 +5,7 @@ import com.example.shiftlabtest.domain.repository.AuthRepository
 
 class RegisterUseCase(private val authRepository: AuthRepository) {
 
-    suspend operator fun invoke(registrationRequest: RegistrationRequest) {
+    suspend operator fun invoke(registrationRequest: RegistrationRequest) =
         authRepository.register(registrationRequest)
-    }
 
 }

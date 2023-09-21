@@ -15,7 +15,6 @@ object ShiftLabTestDestinations {
 
 @Composable
 fun ShiftLabTestNavigation(navHostController: NavHostController, onExitClick: () -> Unit) {
-
     NavHost(navController = navHostController, startDestination = ShiftLabTestDestinations.MAIN) {
         composable(route = ShiftLabTestDestinations.MAIN) {
             MainScreen(navHostController)
