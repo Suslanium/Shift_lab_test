@@ -6,9 +6,6 @@ const val RoundedCornerShapePercentSmall = 10
 const val RoundedCornerShapePercentMedium = 15
 const val RoundedCornerShapePercentLarge = 25
 
-const val RegistrationPrimaryElementWeight = 3f
-const val RegistrationSecondaryElementWeight = 1f
-const val RegistrationSpacerWeight = 0.5f
 const val RegistrationContentWidthFraction = 0.85f
 
 val PaddingTiny = 2.dp

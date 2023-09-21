@@ -114,6 +114,8 @@ class RegistrationViewModel(
     fun register() {
         if (dataIsFilled) {
             viewModelScope.launch(Dispatchers.IO) {
+                //Separate CoroutineExceptionHandler is not used here because
+                //withContext is not available in CoroutineExceptionHandler
                 _registrationIsInProcess.value = true
                 try {
                     val request = RegistrationRequest(

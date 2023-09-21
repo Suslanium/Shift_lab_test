@@ -15,9 +15,11 @@ import com.example.shiftlabtest.domain.usecase.ValidatePasswordUseCase
 import com.example.shiftlabtest.domain.usecase.ValidateSurnameUseCase
 import org.koin.dsl.module
 
-private fun provideAuthRepository(userDataSource: UserDataSource): AuthRepository = AuthRepositoryImpl(userDataSource)
+private fun provideAuthRepository(userDataSource: UserDataSource): AuthRepository =
+    AuthRepositoryImpl(userDataSource)
 
-private fun provideUserRepository(userDataSource: UserDataSource): UserRepository = UserRepositoryImpl(userDataSource)
+private fun provideUserRepository(userDataSource: UserDataSource): UserRepository =
+    UserRepositoryImpl(userDataSource)
 
 fun provideDomainModule() = module {
     single {
