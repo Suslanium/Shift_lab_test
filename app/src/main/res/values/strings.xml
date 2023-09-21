@@ -1,3 +1,31 @@
 <resources>
     <string name="app_name">Shift lab test</string>
+    <string name="name">Name</string>
+    <string name="surname">Surname</string>
+    <string name="birthdate">Birth date</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="register">Register</string>
+    <string name="welcome">Welcome!</string>
+    <string name="blank_name">Name must be filled in</string>
+    <string name="name_too_short">Name must be at least %1$d characters long</string>
+    <string name="blank_surname">Surname must be filled in</string>
+    <string name="surname_too_short">Surname must be at least %1$d characters long</string>
+    <string name="blank_birthdate">Birth date must be specified</string>
+    <string name="password_blank">Password must be filled in</string>
+    <string name="password_too_short">Password must be at least %1$d characters long</string>
+    <string name="password_letter">Password must contain a letter</string>
+    <string name="password_digit">Password must contain a digit</string>
+    <string name="password_spec_symbol">Password must contain a special symbol</string>
+    <string name="password_digit_letter">Password must contain a digit and a letter</string>
+    <string name="password_digit_spec_symbol">Password must contain a digit and a special symbol</string>
+    <string name="password_letter_spec_symbol">Password must contain a letter and a special symbol</string>
+    <string name="confirm_pass_blank">Repeat your password</string>
+    <string name="passwords_dont_match">Passwords do not match</string>
+    <string name="greeting">Greeting</string>
+    <string name="dialog_title">Hi, %1$s %2$s!</string>
+    <string name="dialog_message">We hope you enjoy this app:)</string>
+    <string name="ok">OK</string>
+    <string name="something_went_wrong">Something went wrong…</string>
+    <string name="error">Error</string>
 </resources>
