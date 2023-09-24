@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.shiftlabtest.presentation.ui.screen.MainScreen
-import com.example.shiftlabtest.presentation.ui.screen.RegistrationScreen
+import com.example.shiftlabtest.presentation.ui.screen.registration.RegistrationScreen
 
 object ShiftLabTestDestinations {
     const val REGISTRATION = "registration"
