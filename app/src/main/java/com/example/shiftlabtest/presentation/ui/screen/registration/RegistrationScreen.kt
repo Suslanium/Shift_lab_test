@@ -1,4 +1,4 @@
-package com.example.shiftlabtest.presentation.ui.screen
+package com.example.shiftlabtest.presentation.ui.screen.registration
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,7 +27,8 @@ import com.example.shiftlabtest.R
 import com.example.shiftlabtest.domain.Constants
 import com.example.shiftlabtest.domain.Constants.BIRTH_DATE_RANGE
 import com.example.shiftlabtest.presentation.common.asString
-import com.example.shiftlabtest.presentation.ui.common.AuthItem
+import com.example.shiftlabtest.presentation.ui.screen.registration.components.RegistrationField
+import com.example.shiftlabtest.presentation.ui.screen.registration.components.PasswordField
 import com.example.shiftlabtest.presentation.ui.common.TextAlertDialog
 import com.example.shiftlabtest.presentation.ui.common.TextButton
 import com.example.shiftlabtest.presentation.ui.navigation.ShiftLabTestDestinations
@@ -127,7 +128,7 @@ private fun RegistrationForm(
     registrationIsInProgress: Boolean
 ) {
     val registrationContent by remember { registrationViewModel.registrationContent }
-    AuthItem(
+    RegistrationField(
         icon = ImageVector.vectorResource(id = R.drawable.person_icon),
         label = stringResource(id = R.string.name),
         textFieldValue = registrationContent.name,
@@ -137,7 +138,7 @@ private fun RegistrationForm(
         errorMessage = registrationContent.nameErrorMessage?.asString(),
         enabled = !registrationIsInProgress
     )
-    AuthItem(
+    RegistrationField(
         icon = ImageVector.vectorResource(id = R.drawable.person_icon),
         label = stringResource(id = R.string.surname),
         textFieldValue = registrationContent.surname,
@@ -147,7 +148,7 @@ private fun RegistrationForm(
         errorMessage = registrationContent.surnameErrorMessage?.asString(),
         enabled = !registrationIsInProgress
     )
-    AuthItem(
+    RegistrationField(
         icon = ImageVector.vectorResource(id = R.drawable.calendar_icon),
         label = stringResource(id = R.string.birthdate),
         textFieldValue = registrationContent.birthDate?.format(registrationViewModel.dateFormat)
@@ -162,24 +163,26 @@ private fun RegistrationForm(
         isError = registrationContent.birthDateErrorMessage != null,
         errorMessage = registrationContent.birthDateErrorMessage?.asString()
     )
-    AuthItem(
-        icon = ImageVector.vectorResource(id = R.drawable.password_icon),
+    PasswordField(
+        visibilityIcon = ImageVector.vectorResource(id = R.drawable.visibility_icon),
+        visibilityOffIcon = ImageVector.vectorResource(id = R.drawable.visibility_off_icon),
         label = stringResource(id = R.string.password),
         textFieldValue = registrationContent.password,
         onValueChange = registrationViewModel::setPassword,
+        enabled = !registrationIsInProgress,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.passwordErrorMessage != null,
-        errorMessage = registrationContent.passwordErrorMessage?.asString(),
-        enabled = !registrationIsInProgress
+        errorMessage = registrationContent.passwordErrorMessage?.asString()
     )
-    AuthItem(
-        icon = ImageVector.vectorResource(id = R.drawable.password_icon),
+    PasswordField(
+        visibilityIcon = ImageVector.vectorResource(id = R.drawable.visibility_icon),
+        visibilityOffIcon = ImageVector.vectorResource(id = R.drawable.visibility_off_icon),
         label = stringResource(id = R.string.confirm_password),
         textFieldValue = registrationContent.confirmPassword,
         onValueChange = registrationViewModel::setConfirmPassword,
+        enabled = !registrationIsInProgress,
         widthFraction = RegistrationContentWidthFraction,
         isError = registrationContent.confirmPasswordErrorMessage != null,
-        errorMessage = registrationContent.confirmPasswordErrorMessage?.asString(),
-        enabled = !registrationIsInProgress
+        errorMessage = registrationContent.confirmPasswordErrorMessage?.asString()
     )
 }
